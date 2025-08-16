@@ -88,7 +88,7 @@
         }
         
         .user-role {
-            background: var(--primary-light);
+            background: #e6f0f7;
             color: var(--primary);
             padding: 3px 10px;
             border-radius: 20px;
@@ -212,6 +212,12 @@
             font-weight: bold;
             cursor: pointer;
         }
+
+        /* استایل دکمه غیرفعال */
+        .save-btn:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+        }
     </style>
 </head>
 <body>
@@ -246,7 +252,7 @@
             <div class="result-container" id="resultContainer">
                 <div class="result-title">متن اسکن شده:</div>
                 <div class="result-text" id="qrText"></div>
-                <button class="save-btn" onclick="saveScan()">ذخیره اسکن</button>
+                <button class="save-btn" id="saveButton">ذخیره اسکن</button>
             </div>
         </div>
         
@@ -256,32 +262,42 @@
 
     <!-- تنظیمات Gist -->
     <script>
-        const GIST_ID = "1234567890abcdef1234567890abcdef"; // <script src="https://gist.github.com/Feyz30211/b67b79b4923db7aed96024992bcd83aa.js"></script>
-        const GITHUB_TOKEN = "ghp_..."; // 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
+        // ✅ مقادیر واقعی را وارد کنید
+        const GIST_ID = "b67b79b4923db7aed96024992bcd83aa";
+        const GITHUB_TOKEN = "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";
     </script>
 
+    <!-- بارگذاری کتابخانه QR -->
     <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
     
     <script>
-        // بررسی ورود
+        // بررسی دسترسی
         if (!localStorage.getItem("isLoggedIn") || localStorage.getItem("userRole") !== "staff") {
             window.location.href = "index.html";
+            alert("دسترسی نامعتبر!");
+            throw new Error("دسترسی رد شد");
         }
-        
-        let html5QrCode;
+
+        let html5QrCode = null;
         let scannedData = "";
-        
+
         // نمایش اطلاعات کاربر
-        document.getElementById("userName").textContent = localStorage.getItem("currentUser") || "پرسنل";
-        document.getElementById("userAvatar").textContent = (localStorage.getItem("currentUser") || "پ")[0].toUpperCase();
-        
-        // دکمه شروع اسکن
+        const currentUser = localStorage.getItem("currentUser") || "ناشناس";
+        document.getElementById("userName").textContent = currentUser;
+        document.getElementById("userAvatar").textContent = currentUser[0].toUpperCase();
+
+        // شروع اسکن
         document.getElementById("startButton").addEventListener("click", function() {
-            document.getElementById("startButton").style.display = "none";
+            if (html5QrCode) {
+                alert("لطفاً ابتدا اسکن فعلی را متوقف کنید.");
+                return;
+            }
+
+            this.style.display = "none";
             document.getElementById("stopButton").style.display = "block";
-            
+
             html5QrCode = new Html5Qrcode("reader");
-            
+
             html5QrCode.start(
                 { facingMode: "environment" },
                 {
@@ -292,54 +308,89 @@
                     scannedData = decodedText;
                     document.getElementById("qrText").textContent = decodedText;
                     document.getElementById("resultContainer").style.display = "block";
-                    html5QrCode.stop();
+                    
+                    // توقف خودکار پس از اسکن
+                    html5QrCode.stop().then(() => {
+                        html5QrCode = null;
+                    });
                 },
                 (errorMessage) => {
                     console.log("خطا:", errorMessage);
                 }
             ).catch(err => {
-                console.error("خطا در شروع:", err);
-                alert("خطا در دسترسی به دوربین: " + err.message);
+                console.error("خطا در شروع اسکن:", err);
+                alert("خطا در دسترسی به دوربین: " + (err.message || "مجاز نیست"));
+                resetScanUI();
             });
         });
-        
-        // دکمه توقف اسکن
+
+        // توقف اسکن
         document.getElementById("stopButton").addEventListener("click", function() {
             if (html5QrCode) {
                 html5QrCode.stop().then(() => {
-                    document.getElementById("startButton").style.display = "block";
-                    document.getElementById("stopButton").style.display = "none";
+                    html5QrCode = null;
+                    resetScanUI();
+                }).catch(err => {
+                    console.error("خطا در توقف:", err);
+                    resetScanUI();
                 });
             }
         });
-        
+
+        function resetScanUI() {
+            document.getElementById("startButton").style.display = "block";
+            document.getElementById("stopButton").style.display = "none";
+            if (html5QrCode) {
+                html5QrCode = null;
+            }
+        }
+
         // ذخیره اسکن
-        function saveScan() {
-            const username = localStorage.getItem("currentUser") || "کاربر";
-            const timestamp = new Date().toISOString();
-            
-            // دریافت داده‌های فعلی
-            fetch(`https://api.github.com/gists/${GIST_ID}`, {
-                headers: {
-                    "Authorization": `token ${GITHUB_TOKEN}`,
-                    "Accept": "application/vnd.github.v3+json"
-                }
-            })
-            .then(response => response.json())
-            .then(gist => {
-                const filename = Object.keys(gist.files)[0];
-                const content = JSON.parse(gist.files[filename].content);
-                
-                // افزودن اسکن جدید
-                content.scans = content.scans || [];
-                content.scans.push({
-                    user: username,
-                    scannedData: scannedData,
-                    timestamp: timestamp
+        document.getElementById("saveButton").addEventListener("click", async function() {
+            if (!scannedData) {
+                alert("هیچ داده‌ای برای ذخیره وجود ندارد.");
+                return;
+            }
+
+            const btn = this;
+            btn.disabled = true;
+            btn.textContent = "در حال ذخیره...";
+
+            try {
+                const response = await fetch(`https://api.github.com/gists/${GIST_ID}`, {
+                    headers: {
+                        "Authorization": `token ${GITHUB_TOKEN}`,
+                        "Accept": "application/vnd.github.v3+json"
+                    }
                 });
-                
+
+                if (!response.ok) {
+                    if (response.status === 404) throw new Error("Gist یافت نشد.");
+                    if (response.status === 401) throw new Error("توکن نامعتبر است.");
+                    throw new Error(`خطای سرور: ${response.status}`);
+                }
+
+                const gist = await response.json();
+                const filename = Object.keys(gist.files).find(f => f.endsWith('.json')) || Object.keys(gist.files)[0];
+                if (!filename) throw new Error("هیچ فایلی در Gist وجود ندارد.");
+
+                let content;
+                try {
+                    content = JSON.parse(gist.files[filename].content);
+                } catch (e) {
+                    throw new Error("محتوای JSON نامعتبر است.");
+                }
+
+                // افزودن اسکن جدید
+                content.scans = Array.isArray(content.scans) ? content.scans : [];
+                content.scans.push({
+                    user: currentUser,
+                    scannedData: scannedData,
+                    timestamp: new Date().toISOString()
+                });
+
                 // ذخیره در Gist
-                return fetch(`https://api.github.com/gists/${GIST_ID}`, {
+                const saveResponse = await fetch(`https://api.github.com/gists/${GIST_ID}`, {
                     method: "PATCH",
                     headers: {
                         "Authorization": `token ${GITHUB_TOKEN}`,
@@ -353,20 +404,30 @@
                         }
                     })
                 });
-            })
-            .then(response => {
-                if (!response.ok) throw new Error("خطا در ذخیره");
+
+                if (!saveResponse.ok) {
+                    const err = await saveResponse.json();
+                    throw new Error(`ذخیره ناموفق: ${err.message}`);
+                }
+
                 alert("اسکن با موفقیت ذخیره شد!");
                 document.getElementById("resultContainer").style.display = "none";
-                document.getElementById("startButton").style.display = "block";
-            })
-            .catch(error => {
+                scannedData = "";
+
+            } catch (error) {
+                console.error("خطا در ذخیره اسکن:", error);
                 alert("خطا در ذخیره: " + error.message);
-            });
-        }
-        
+            } finally {
+                btn.disabled = false;
+                btn.textContent = "ذخیره اسکن";
+            }
+        });
+
         // خروج
         function logout() {
+            if (html5QrCode) {
+                html5QrCode.stop();
+            }
             localStorage.removeItem("isLoggedIn");
             localStorage.removeItem("currentUser");
             localStorage.removeItem("userRole");
