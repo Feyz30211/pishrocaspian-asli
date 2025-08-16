@@ -210,7 +210,7 @@
                 <input type="text" id="adminUsername" placeholder="نام کاربری مدیر">
                 <input type="password" id="adminPassword" placeholder="رمز عبور">
                 <div class="error" id="adminError"></div>
-                <button onclick="adminLogin()">ورود به داشبورد</button>
+                <button type="button" onclick="adminLogin()">ورود به داشبورد</button>
             </div>
             
             <div class="login-form" id="staffForm">
@@ -218,7 +218,7 @@
                 <input type="text" id="staffUsername" placeholder="نام کاربری پرسنل">
                 <input type="password" id="staffPassword" placeholder="رمز عبور">
                 <div class="error" id="staffError"></div>
-                <button onclick="staffLogin()">ورود به اسکنر</button>
+                <button type="button" onclick="staffLogin()">ورود به اسکنر</button>
             </div>
         </div>
         
@@ -227,25 +227,22 @@
         </div>
     </div>
 
-    <!-- تنظیمات Gist -->
+    <!-- تنظیمات Gist - فقط برای تست محلی -->
     <script>
-        const GIST_ID = "1234567890abcdef1234567890abcdef"; //<script src="https://gist.github.com/Feyz30211/b67b79b4923db7aed96024992bcd83aa.js"></script>
-        const GITHUB_TOKEN = "ghp_..."; //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
+        // ✅ تعریف صحیح GIST_ID و GITHUB_TOKEN
+        const GIST_ID = "b67b79b4923db7aed96024992bcd83aa"; // فقط شناسه Gist
+        const GITHUB_TOKEN = "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";
     </script>
 
     <script>
         // انتخاب نقش
         document.querySelectorAll('.role-option').forEach(option => {
             option.addEventListener('click', () => {
-                // حذف کلاس active از همه
                 document.querySelectorAll('.role-option').forEach(opt => {
                     opt.classList.remove('active');
                 });
-                
-                // افزودن کلاس active به انتخابی
                 option.classList.add('active');
-                
-                // نمایش فرم مربوطه
+
                 const role = option.getAttribute('data-role');
                 document.querySelectorAll('.login-form').forEach(form => {
                     form.classList.remove('active');
@@ -253,39 +250,37 @@
                 document.getElementById(`${role}Form`).classList.add('active');
             });
         });
-        
+
         // ورود مدیران
         function adminLogin() {
-            const username = document.getElementById('adminUsername').value;
-            const password = document.getElementById('adminPassword').value;
+            const username = document.getElementById('adminUsername').value.trim();
+            const password = document.getElementById('adminPassword').value.trim();
             const errorEl = document.getElementById('adminError');
-            
             errorEl.textContent = '';
-            
+
             if (!username || !password) {
                 errorEl.textContent = 'لطفاً نام کاربری و رمز عبور را وارد کنید';
                 return;
             }
-            
+
             authenticateUser(username, password, 'admin', errorEl);
         }
-        
+
         // ورود پرسنل
         function staffLogin() {
-            const username = document.getElementById('staffUsername').value;
-            const password = document.getElementById('staffPassword').value;
+            const username = document.getElementById('staffUsername').value.trim();
+            const password = document.getElementById('staffPassword').value.trim();
             const errorEl = document.getElementById('staffError');
-            
             errorEl.textContent = '';
-            
+
             if (!username || !password) {
                 errorEl.textContent = 'لطفاً نام کاربری و رمز عبور را وارد کنید';
                 return;
             }
-            
+
             authenticateUser(username, password, 'staff', errorEl);
         }
-        
+
         // تابع احراز هویت
         function authenticateUser(username, password, role, errorEl) {
             fetch(`https://api.github.com/gists/${GIST_ID}`, {
@@ -295,28 +290,38 @@
                 }
             })
             .then(response => {
-                if (!response.ok) throw new Error('خطا در اتصال به سرور');
+                if (!response.ok) {
+                    throw new Error('خطا در اتصال به سرور یا Gist یافت نشد');
+                }
                 return response.json();
             })
             .then(gist => {
                 const filename = Object.keys(gist.files)[0];
-                const content = JSON.parse(gist.files[filename].content);
-                const users = content.users || [];
+                if (!filename) {
+                    throw new Error('فایلی در Gist یافت نشد');
+                }
+
+                let content;
+                try {
+                    content = JSON.parse(gist.files[filename].content);
+                } catch (e) {
+                    throw new Error('دادهٔ JSON نامعتبر است');
+                }
+
+                const users = Array.isArray(content.users) ? content.users : [];
                 
                 const foundUser = users.find(user => 
                     user.username === username && 
                     user.password === password &&
-                    (role === 'admin' ? user.role === 'admin' : user.role !== 'admin')
+                    user.role === (role === 'admin' ? 'admin' : 'staff') // ✅ دقیق‌تر
                 );
                 
                 if (foundUser) {
-                    // ذخیره اطلاعات کاربر
                     localStorage.setItem("isLoggedIn", "true");
                     localStorage.setItem("currentUser", username);
                     localStorage.setItem("userRole", foundUser.role);
                     localStorage.setItem("userEmail", foundUser.email || '');
                     
-                    // هدایت به صفحه مربوطه
                     if (role === 'admin') {
                         window.location.href = "admin-dashboard.html";
                     } else {
@@ -327,15 +332,16 @@
                 }
             })
             .catch(error => {
-                errorEl.textContent = error.message;
                 console.error('خطا:', error);
+                errorEl.textContent = 'خطا در احراز هویت: ' + error.message;
             });
         }
-        
+
         // بارگذاری اولیه
         document.addEventListener('DOMContentLoaded', () => {
             // انتخاب پیش‌فرض: ورود پرسنل
-            document.querySelector('.role-option[data-role="staff"]').click();
+            const staffOption = document.querySelector('.role-option[data-role="staff"]');
+            if (staffOption) staffOption.click();
         });
     </script>
 </body>
