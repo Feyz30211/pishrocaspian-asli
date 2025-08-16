@@ -28,13 +28,13 @@
             --card-shadow: 0 0.125rem 0.25rem rgba(26, 111, 160, 0.1);
             --sidebar-width: 280px;
         }
-
+        
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
-
+        
         body {
             font-family: 'Sahel', Tahoma, sans-serif; /* فونت بی‌نازنین برای متن‌های فارسی */
             background-color: #f8f9fa;
@@ -43,7 +43,7 @@
             overflow-x: hidden;
             background: linear-gradient(135deg, #f5f7fa 0%, #e4e7eb 100%);
         }
-
+        
         /* لودر */
         .loader {
             position: fixed;
@@ -58,11 +58,11 @@
             z-index: 9999;
             display: none;
         }
-
+        
         .loader-content {
             text-align: center;
         }
-
+        
         .spinner {
             width: 50px;
             height: 50px;
@@ -72,12 +72,12 @@
             animation: spin 1s linear infinite;
             margin-bottom: 20px;
         }
-
+        
         @keyframes spin {
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
-
+        
         /* سایدبار */
         .sidebar {
             position: fixed;
@@ -92,20 +92,20 @@
             z-index: 1000;
             box-shadow: 3px 0 15px rgba(26, 111, 160, 0.2);
         }
-
+        
         .sidebar-header {
             padding: 0 20px 25px;
             border-bottom: 1px solid rgba(255, 255, 255, 0.15);
             margin-bottom: 25px;
         }
-
+        
         .logo-container {
             display: flex;
             align-items: center;
             gap: 15px;
             padding: 10px 0;
         }
-
+        
         .company-logo {
             width: 50px;
             height: 50px;
@@ -119,23 +119,23 @@
             font-size: 1.5rem;
             box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
         }
-
+        
         .company-name {
             font-size: 1.3rem;
             font-weight: bold;
             line-height: 1.3;
         }
-
+        
         .company-subtitle {
             font-size: 0.85rem;
             opacity: 0.9;
             margin-top: 3px;
         }
-
+        
         .sidebar-menu {
             padding: 0 10px;
         }
-
+        
         .sidebar-menu-item {
             display: flex;
             align-items: center;
@@ -150,26 +150,26 @@
             font-size: 1.05rem;
             border-left: 4px solid transparent;
         }
-
+        
         .sidebar-menu-item:hover {
             background: rgba(255, 255, 255, 0.12);
             color: white;
             border-left: 4px solid white;
         }
-
+        
         .sidebar-menu-item.active {
             background: rgba(255, 255, 255, 0.18);
             color: white;
             font-weight: 600;
             border-left: 4px solid white;
         }
-
+        
         .sidebar-menu-item i {
             font-size: 1.25rem;
             width: 28px;
             text-align: center;
         }
-
+        
         /* محتوای اصلی */
         .main-content {
             margin-left: var(--sidebar-width);
@@ -177,7 +177,7 @@
             min-height: 100vh;
             transition: all 0.3s;
         }
-
+        
         /* هدر */
         .header {
             display: flex;
@@ -190,7 +190,7 @@
             box-shadow: var(--card-shadow);
             border: 1px solid var(--border);
         }
-
+        
         .header-title {
             font-size: 1.7rem;
             font-weight: bold;
@@ -199,12 +199,12 @@
             align-items: center;
             gap: 12px;
         }
-
+        
         .header-title i {
             color: var(--primary);
             font-size: 1.4rem;
         }
-
+        
         .user-profile {
             display: flex;
             align-items: center;
@@ -215,11 +215,11 @@
             border-radius: 30px;
             transition: all 0.2s;
         }
-
+        
         .user-profile:hover {
             background: var(--primary);
         }
-
+        
         .user-avatar {
             width: 42px;
             height: 42px;
@@ -233,13 +233,13 @@
             font-size: 1.1rem;
             box-shadow: 0 2px 5px rgba(26, 111, 160, 0.2);
         }
-
+        
         .user-name {
             font-weight: 600;
             color: var(--dark);
             font-size: 1.05rem;
         }
-
+        
         .user-role {
             font-size: 0.85rem;
             background: white;
@@ -248,7 +248,7 @@
             color: var(--primary);
             font-weight: 500;
         }
-
+        
         /* کارت‌ها */
         .cards-container {
             display: grid;
@@ -256,7 +256,7 @@
             gap: 25px;
             margin-bottom: 30px;
         }
-
+        
         .card {
             background: white;
             border-radius: 14px;
@@ -267,7 +267,7 @@
             position: relative;
             overflow: hidden;
         }
-
+        
         .card::before {
             content: '';
             position: absolute;
@@ -277,12 +277,12 @@
             height: 100%;
             background: var(--primary);
         }
-
+        
         .card:hover {
             transform: translateY(-6px);
             box-shadow: 0 10px 25px rgba(26, 111, 160, 0.15);
         }
-
+        
         .card-icon {
             width: 60px;
             height: 60px;
@@ -295,14 +295,14 @@
             color: var(--primary);
             margin-bottom: 18px;
         }
-
+        
         .card-title {
             font-size: 1.05rem;
             color: var(--gray);
             margin-bottom: 12px;
             font-weight: 500;
         }
-
+        
         .card-value {
             font-size: 2.4rem;
             font-weight: bold;
@@ -310,28 +310,28 @@
             color: var(--dark);
             font-family: 'DIN Next', monospace; /* فونت زیبا برای اعداد */
         }
-
+        
         .card-trend {
             display: flex;
             align-items: center;
             gap: 6px;
             font-size: 0.95rem;
         }
-
+        
         .trend-up {
             color: var(--accent);
             display: flex;
             align-items: center;
             gap: 4px;
         }
-
+        
         .trend-down {
             color: var(--danger);
             display: flex;
             align-items: center;
             gap: 4px;
         }
-
+        
         /* نمودارها و جدول */
         .dashboard-grid {
             display: grid;
@@ -339,17 +339,17 @@
             gap: 25px;
             margin-bottom: 30px;
         }
-
+        
         @media (max-width: 992px) {
             .dashboard-grid {
                 grid-template-columns: 1fr;
             }
         }
-
+        
         .card-full {
             grid-column: 1 / -1;
         }
-
+        
         .chart-container {
             background: white;
             border-radius: 14px;
@@ -358,14 +358,14 @@
             height: 320px;
             border: 1px solid var(--border);
         }
-
+        
         .chart-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
             margin-bottom: 20px;
         }
-
+        
         .chart-title {
             font-size: 1.25rem;
             font-weight: bold;
@@ -374,11 +374,11 @@
             align-items: center;
             gap: 10px;
         }
-
+        
         .chart-title i {
             color: var(--primary);
         }
-
+        
         .stats-filter {
             display: flex;
             background: var(--primary-light);
@@ -386,7 +386,7 @@
             padding: 5px;
             gap: 5px;
         }
-
+        
         .filter-btn {
             padding: 8px 15px;
             border-radius: 25px;
@@ -396,14 +396,14 @@
             font-weight: 500;
             transition: all 0.2s;
         }
-
+        
         .filter-btn.active {
             background: white;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.08);
             color: var(--primary);
             font-weight: 600;
         }
-
+        
         .table-container {
             background: white;
             border-radius: 14px;
@@ -411,7 +411,7 @@
             overflow: hidden;
             border: 1px solid var(--border);
         }
-
+        
         .table-header {
             padding: 20px 25px;
             background: #f8fafc;
@@ -420,7 +420,7 @@
             justify-content: space-between;
             align-items: center;
         }
-
+        
         .table-title {
             font-weight: bold;
             font-size: 1.25rem;
@@ -429,48 +429,48 @@
             align-items: center;
             gap: 10px;
         }
-
+        
         .table-title i {
             color: var(--primary);
         }
-
+        
         table {
             width: 100%;
             border-collapse: collapse;
         }
-
+        
         thead {
             background: #f1f5f9;
         }
-
+        
         th, td {
             padding: 16px 20px;
             text-align: right;
             border-bottom: 1px solid var(--border);
             font-weight: 500;
         }
-
+        
         tr:hover {
             background: var(--primary-light);
         }
-
+        
         .status {
             padding: 6px 14px;
             border-radius: 20px;
             font-size: 0.85rem;
             font-weight: 500;
         }
-
+        
         .status-active {
             background: rgba(46, 204, 113, 0.15);
             color: var(--accent);
         }
-
+        
         .status-inactive {
             background: rgba(231, 76, 60, 0.15);
             color: var(--danger);
         }
-
+        
         .action-btn {
             border: none;
             background: none;
@@ -484,11 +484,11 @@
             gap: 5px;
             font-weight: 500;
         }
-
+        
         .action-btn:hover {
             background: rgba(26, 111, 160, 0.1);
         }
-
+        
         .btn-add {
             background: var(--primary);
             color: white;
@@ -501,13 +501,13 @@
             box-shadow: 0 4px 6px rgba(26, 111, 160, 0.15);
             transition: all 0.2s;
         }
-
+        
         .btn-add:hover {
             background: var(--primary-dark);
             transform: translateY(-2px);
             box-shadow: 0 6px 8px rgba(26, 111, 160, 0.2);
         }
-
+        
         /* فرم افزودن کاربر */
         .modal {
             display: none;
@@ -522,7 +522,7 @@
             align-items: center;
             backdrop-filter: blur(2px);
         }
-
+        
         .modal-content {
             background: white;
             border-radius: 16px;
@@ -533,7 +533,7 @@
             overflow: hidden;
             border: 1px solid var(--border);
         }
-
+        
         @keyframes modalOpen {
             from { 
                 opacity: 0; 
@@ -544,7 +544,7 @@
                 transform: translateY(0) scale(1);
             }
         }
-
+        
         .modal-header {
             padding: 20px 25px;
             background: var(--primary-light);
@@ -553,7 +553,7 @@
             justify-content: space-between;
             align-items: center;
         }
-
+        
         .modal-title {
             font-weight: bold;
             font-size: 1.3rem;
@@ -562,11 +562,11 @@
             align-items: center;
             gap: 10px;
         }
-
+        
         .modal-title i {
             color: var(--primary);
         }
-
+        
         .modal-close {
             background: none;
             border: none;
@@ -581,20 +581,20 @@
             justify-content: center;
             transition: all 0.2s;
         }
-
+        
         .modal-close:hover {
             background: rgba(0, 0, 0, 0.05);
             color: var(--dark);
         }
-
+        
         .modal-body {
             padding: 25px;
         }
-
+        
         .form-group {
             margin-bottom: 22px;
         }
-
+        
         .form-group label {
             display: block;
             margin-bottom: 10px;
@@ -602,7 +602,7 @@
             color: var(--dark);
             font-size: 1.05rem;
         }
-
+        
         .form-control {
             width: 100%;
             padding: 14px 18px;
@@ -612,13 +612,13 @@
             transition: all 0.2s;
             font-family: 'Sahel', Tahoma, sans-serif;
         }
-
+        
         .form-control:focus {
             outline: none;
             border-color: var(--primary);
             box-shadow: 0 0 0 4px rgba(26, 111, 160, 0.15);
         }
-
+        
         .modal-footer {
             padding: 20px 25px;
             border-top: 1px solid var(--border);
@@ -626,7 +626,7 @@
             justify-content: flex-end;
             gap: 12px;
         }
-
+        
         .btn {
             padding: 12px 22px;
             border-radius: 10px;
@@ -637,53 +637,53 @@
             transition: all 0.25s ease;
             box-shadow: 0 3px 6px rgba(26, 111, 160, 0.1);
         }
-
+        
         .btn-primary {
             background: var(--primary);
             color: white;
         }
-
+        
         .btn-primary:hover {
             background: var(--primary-dark);
             transform: translateY(-2px);
             box-shadow: 0 5px 8px rgba(26, 111, 160, 0.15);
         }
-
+        
         .btn-secondary {
             background: #e9ecef;
             color: var(--dark);
             border: 1px solid var(--border);
         }
-
+        
         .btn-secondary:hover {
             background: #dde2e6;
             transform: translateY(-2px);
         }
-
+        
         .btn-danger {
             background: var(--danger);
             color: white;
         }
-
+        
         .btn-danger:hover {
             background: #c0392b;
             transform: translateY(-2px);
         }
-
+        
         /* ریسپانسیو */
         @media (max-width: 768px) {
             .sidebar {
                 transform: translateX(-100%);
             }
-
+            
             .sidebar.active {
                 transform: translateX(0);
             }
-
+            
             .main-content {
                 margin-left: 0;
             }
-
+            
             .mobile-menu-btn {
                 display: block;
             }
@@ -696,7 +696,7 @@
                 font-size: 1.3rem;
             }
         }
-
+        
         .mobile-menu-btn {
             display: none;
             background: none;
@@ -713,12 +713,12 @@
             justify-content: center;
             transition: all 0.2s;
         }
-
+        
         .mobile-menu-btn:hover {
             background: var(--primary-light);
             color: var(--primary-dark);
         }
-
+        
         /* پاکت‌های اعلان */
         .notification {
             position: fixed;
@@ -738,30 +738,30 @@
             gap: 12px;
             max-width: 350px;
         }
-
+        
         .notification.show {
             transform: translateX(0);
         }
-
+        
         .notification i {
             font-size: 1.3rem;
         }
-
+        
         .notification.success {
             background: linear-gradient(135deg, var(--accent), #27ae60);
         }
-
+        
         .notification.error {
             background: linear-gradient(135deg, var(--danger), #c0392b);
         }
-
+        
         /* تب‌ها */
         .tabs {
             display: flex;
             border-bottom: 1px solid var(--border);
             margin-bottom: 25px;
         }
-
+        
         .tab {
             padding: 14px 25px;
             cursor: pointer;
@@ -770,13 +770,13 @@
             font-size: 1.05rem;
             transition: all 0.2s;
         }
-
+        
         .tab.active {
             border-bottom: 3px solid var(--primary);
             font-weight: 600;
             color: var(--primary);
         }
-
+        
         /* خطوط راهنما */
         .guideline {
             position: absolute;
@@ -785,15 +785,15 @@
             background: var(--primary-light);
             opacity: 0.5;
         }
-
+        
         .guideline-1 {
             left: 25%;
         }
-
+        
         .guideline-2 {
             left: 50%;
         }
-
+        
         .guideline-3 {
             left: 75%;
         }
@@ -1218,11 +1218,11 @@
         <span id="notificationMessage">عملیات با موفقیت انجام شد</span>
     </div>
 
-    <!-- تنظیمات Gist (در محیط واقعی این بخش را پر کن) -->
+    <!-- تنظیمات Gist -->
     <script>
         // تنظیمات Gist (این مقادیر را پر کن)
-        const GIST_ID = "1234567890abcdef1234567890abcdef"; //<script src="https://gist.github.com/Feyz30211/b67b79b4923db7aed96024992bcd83aa.js"></script>
-        const GITHUB_TOKEN = "ghp_..."; // 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
+        const GIST_ID = "b67b79b4923db7aed96024992bcd83aa"; // فقط ID Gist بدون URL
+        const GITHUB_TOKEN = "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";
     </script>
 
     <script>
@@ -1315,7 +1315,14 @@
                     });
                     
                     if (!response.ok) {
-                        throw new Error('خطا در دریافت داده‌ها از Gist');
+                        if (response.status === 404) {
+                            throw new Error("Gist یافت نشد. لطفاً ID صحیح را وارد کنید.");
+                        } else if (response.status === 401) {
+                            throw new Error("توکن نامعتبر است. لطفاً توکن صحیح را وارد کنید.");
+                        } else if (response.status === 403) {
+                            throw new Error("دسترسی محدود شده است. ممکن است محدودیت درخواست داشته باشید.");
+                        }
+                        throw new Error(`خطا در دریافت داده‌ها: ${response.status}`);
                     }
                     
                     const gist = await response.json();
@@ -1363,6 +1370,11 @@
                     });
                     
                     if (!response.ok) {
+                        if (response.status === 401) {
+                            throw new Error("توکن نامعتبر است. لطفاً توکن صحیح را وارد کنید.");
+                        } else if (response.status === 403) {
+                            throw new Error("دسترسی محدود شده است. ممکن است محدودیت درخواست داشته باشید.");
+                        }
                         throw new Error('خطا در به‌روزرسانی داده‌ها');
                     }
                     
